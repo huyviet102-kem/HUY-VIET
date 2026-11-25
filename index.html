@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đặng Huy Việt - Danh Thiếp Vũ Trụ</title>
+  <title>Đặng Huy Việt - Danh Thiếp Không Gian Xanh Đen</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -11,7 +11,7 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      background-color: #03050c;
+      background: radial-gradient(circle at 20% 15%, #0a293a 0%, #051622 48%, #020910 100%);
       color: #f5f5f7;
       min-height: 100vh;
       overflow-x: hidden;
@@ -23,7 +23,6 @@
       cursor: inherit;
     }
 
-    /* Canvas vũ trụ 3D toàn màn hình */
     #space-canvas {
       position: fixed;
       inset: 0;
@@ -33,17 +32,17 @@
       display: block;
     }
 
-    /* Thẻ kính mờ phong cách Apple trên nền vũ trụ */
-    .apple-glass-card {
-      background: rgba(18, 22, 36, 0.62);
+    /* Thẻ kính mờ tông xanh đen phong cách Apple */
+    .teal-glass-card {
+      background: rgba(6, 24, 36, 0.66);
       backdrop-filter: blur(26px) saturate(160%);
       -webkit-backdrop-filter: blur(26px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      box-shadow: 0 30px 70px -15px rgba(0, 8, 16, 0.8), inset 0 1px 0 rgba(125, 211, 252, 0.16);
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
 
-    .apple-glass-card.hidden-mode {
+    .teal-glass-card.hidden-mode {
       opacity: 0;
       pointer-events: none;
       transform: scale(0.96);
@@ -54,4 +53,697 @@
       background: linear-gradient(135deg, #ff9f0a 0%, #ff7a00 100%);
       color: #ffffff;
       border-radius: 9999px;
-      box-shadow: 0 10px 24px -6px rgba(255, 122, 0, 0.45), inset 0 1px 0 rgba(255
+      box-shadow: 0 10px 24px -6px rgba(255, 122, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
+    }
+
+    .island-orange:hover {
+      transform: translateY(-2px) scale(1.015);
+      filter: brightness(1.05);
+    }
+
+    .island-orange:active {
+      transform: scale(0.98);
+    }
+
+    /* Thanh Dynamic Island xanh đen điều khiển vũ trụ */
+    .space-island {
+      background: rgba(5, 20, 31, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      box-shadow: 0 12px 32px rgba(0, 6, 12, 0.65);
+    }
+
+    .planet-pill {
+      transition: all 0.2s ease;
+    }
+
+    .planet-pill.active {
+      background: linear-gradient(135deg, #ff9f0a 0%, #ff7a00 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.5);
+    }
+
+    /* Vương miệng bling bling lấp lánh */
+    .bling-crown {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-4deg);
+      font-size: 36px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255, 214, 10, 0.95)) drop-shadow(0 0 18px rgba(255, 149, 0, 0.85));
+      animation: blingPulse 2s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    @keyframes blingPulse {
+      0%, 100% {
+        transform: translateX(-50%) rotate(-4deg) scale(1);
+        filter: drop-shadow(0 0 8px rgba(255, 214, 10, 0.9)) drop-shadow(0 0 16px rgba(255, 149, 0, 0.8));
+      }
+      50% {
+        transform: translateX(-50%) rotate(3deg) scale(1.12);
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 28px rgba(255, 204, 0, 1));
+      }
+    }
+
+    /* Hiệu ứng hạt 7 sắc cầu vồng theo chuột */
+    .rainbow-trail {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      animation: fadeOut 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.15);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(125, 211, 252, 0.25);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between p-4 md:p-6">
+
+  <!-- Không gian 3D nền xanh đen (Trái Đất & các hành tinh) -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- Thanh Dynamic Island điều khiển hành tinh phía trên -->
+  <div class="relative z-20 w-full max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div class="space-island rounded-full px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto max-w-full">
+      <span class="text-xs font-semibold text-orange-400 px-2 flex items-center gap-1.5 shrink-0">
+        <i class="fa-solid fa-planet-ringed"></i> Hành tinh
+      </span>
+      <button onclick="focusPlanet('solar')" data-planet="solar" class="planet-pill active text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Toàn cảnh</button>
+      <button onclick="focusPlanet('mercury')" data-planet="mercury" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Sao Thủy</button>
+      <button onclick="focusPlanet('venus')" data-planet="venus" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Sao Kim</button>
+      <button onclick="focusPlanet('earth')" data-planet="earth" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">🌍 Trái Đất</button>
+      <button onclick="focusPlanet('mars')" data-planet="mars" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Sao Hỏa</button>
+      <button onclick="focusPlanet('jupiter')" data-planet="jupiter" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Sao Mộc</button>
+      <button onclick="focusPlanet('saturn')" data-planet="saturn" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">🪐 Sao Thổ</button>
+      <button onclick="focusPlanet('uranus')" data-planet="uranus" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Thiên Vương</button>
+      <button onclick="focusPlanet('neptune')" data-planet="neptune" class="planet-pill text-xs font-medium px-3 py-1 rounded-full text-sky-100 hover:text-white shrink-0">Hải Vương</button>
+    </div>
+
+    <!-- Nút ẩn/hiện thẻ để ngắm trọn không gian -->
+    <button
+      id="toggle-card-btn"
+      onclick="toggleProfileCard()"
+      class="space-island rounded-full px-4 py-2 text-xs font-medium text-white hover:border-orange-400/60 flex items-center gap-2 transition shrink-0"
+    >
+      <i class="fa-solid fa-eye-slash text-orange-400" id="toggle-icon"></i>
+      <span id="toggle-text">Ngắm vũ trụ</span>
+    </button>
+  </div>
+
+  <!-- Thông tin hành tinh đang quan sát -->
+  <div id="planet-hud" class="fixed bottom-4 left-4 z-20 space-island rounded-2xl px-4 py-3 max-w-xs text-left pointer-events-none">
+    <div class="flex items-center gap-2 text-xs font-semibold text-orange-400">
+      <i class="fa-solid fa-satellite"></i>
+      <span id="planet-hud-title">Hệ Mặt Trời • Toàn cảnh</span>
+    </div>
+    <p id="planet-hud-desc" class="text-[11.5px] text-sky-100/80 mt-1 leading-relaxed">
+      Kéo chuột để xoay 360°, cuộn để thu phóng, hoặc chọn hành tinh phía trên để bay tới quan sát.
+    </p>
+  </div>
+
+  <!-- Khung lớn trung tâm trên nền xanh đen -->
+  <main class="relative z-10 w-full max-w-5xl mx-auto my-auto">
+    <div id="main-profile-card" class="teal-glass-card rounded-[36px] p-7 md:p-10 relative overflow-hidden">
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- CỘT 1 (4/12): Avatar, Vương miệng bling bling, Tên & Liên hệ -->
+        <div class="lg:col-span-4 text-center lg:border-r lg:border-sky-300/15 lg:pr-7 flex flex-col items-center">
+          <div class="relative mt-4 mb-5">
+            <span class="bling-crown" aria-hidden="true">👑</span>
+            <div class="w-28 h-28 mx-auto rounded-full bg-gradient-to-b from-orange-400 to-amber-600 p-[3px] shadow-xl overflow-hidden">
+              <!-- Muốn đổi ảnh đại diện: thay div bên dưới bằng <img src="avatar.jpg" alt="Đặng Huy Việt" class="w-full h-full object-cover object-top rounded-full"> -->
+              <div class="w-full h-full bg-[#061824] rounded-full flex items-center justify-center text-3xl font-semibold tracking-tight text-white">
+                ĐHV
+              </div>
+            </div>
+            <span class="absolute bottom-1 right-1.5 bg-[#34c759] w-4 h-4 rounded-full border-[3px] border-[#061824]" title="Đang hoạt động"></span>
+          </div>
+
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-white leading-tight mb-1">
+            Đặng Huy Việt
+          </h1>
+          <p class="text-sky-200/80 text-sm font-normal mb-6">
+            Chuyên Lý • THPT Chuyên Bến Tre
+          </p>
+
+          <div class="w-full space-y-2.5">
+            <a href="tel:0365966945" class="w-full py-3 px-5 bg-white text-[#061824] hover:bg-sky-50 active:scale-[0.99] text-sm font-semibold rounded-full flex items-center justify-center space-x-2 transition shadow-md">
+              <i class="fa-solid fa-phone text-xs text-orange-500"></i>
+              <span>036 596 6945</span>
+            </a>
+
+            <a href="https://www.facebook.com/share/1EhuqUdwd6/?mibextid=wwXIfr" target="_blank" class="w-full py-3 px-5 bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.99] text-white text-sm font-semibold rounded-full flex items-center justify-center space-x-2 transition shadow-md">
+              <i class="fa-brands fa-facebook text-base"></i>
+              <span>Kết nối Facebook</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CỘT 2 (4/12): Các khung Dynamic Island màu cam -->
+        <div class="lg:col-span-4 space-y-5 text-left">
+          <div>
+            <div class="text-[11px] font-semibold text-sky-200/80 uppercase tracking-wider mb-2.5 px-1">
+              Thông tin cá nhân
+            </div>
+            <div class="space-y-2.5">
+              <div class="island-orange px-4 py-3 flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <i class="fa-solid fa-cake-candles text-sm"></i>
+                </div>
+                <div class="leading-tight">
+                  <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Ngày sinh</div>
+                  <div class="text-[14.5px] font-semibold">22/02/2010</div>
+                </div>
+              </div>
+
+              <div class="island-orange px-4 py-3 flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <i class="fa-solid fa-atom text-sm"></i>
+                </div>
+                <div class="leading-tight">
+                  <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Lớp chuyên</div>
+                  <div class="text-[14.5px] font-semibold">Chuyên Lý</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tài khoản ngân hàng ACB -->
+          <div>
+            <div class="text-[11px] font-semibold text-sky-200/80 uppercase tracking-wider mb-2.5 px-1">
+              Tài khoản ngân hàng
+            </div>
+            <button
+              type="button"
+              onclick="copyAcbAccount()"
+              class="island-orange w-full px-4 py-3.5 flex items-center justify-between text-left"
+              title="Nhấn để sao chép STK ACB"
+            >
+              <div class="flex items-center space-x-3">
+                <span class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">
+                  ACB
+                </span>
+                <div class="leading-tight">
+                  <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Ngân hàng ACB</div>
+                  <div class="text-[15.5px] font-semibold tracking-wider">44611217</div>
+                </div>
+              </div>
+              <span id="copy-status" class="text-[11px] font-medium bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition">
+                <i class="fa-regular fa-copy mr-1"></i>Copy
+              </span>
+            </button>
+          </div>
+
+          <!-- Từng mục sở thích riêng -->
+          <div>
+            <div class="text-[11px] font-semibold text-sky-200/80 uppercase tracking-wider mb-2.5 px-1">
+              Sở thích
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+                <i class="fa-solid fa-bolt text-xs"></i>
+                <span>Thể thao</span>
+              </div>
+              <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+                <i class="fa-solid fa-feather text-xs"></i>
+                <span>Cầu lông</span>
+              </div>
+              <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+                <i class="fa-regular fa-futbol text-xs"></i>
+                <span>Bóng đá</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CỘT 3 (4/12): Nhắn tin trực tiếp cho Đặng Huy Việt qua trang web -->
+        <div class="lg:col-span-4 lg:border-l lg:border-sky-300/15 lg:pl-7 text-left">
+          <div class="flex items-center justify-between mb-2.5 px-1">
+            <span class="text-[11px] font-semibold text-sky-200/80 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-paper-plane text-orange-400"></i> Nhắn tin cho tôi
+            </span>
+            <span class="text-[11px] text-emerald-400 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Trực tuyến
+            </span>
+          </div>
+
+          <form id="message-form" onsubmit="handleSendMessage(event)" class="space-y-3">
+            <input
+              type="text"
+              id="sender-name"
+              placeholder="Tên của bạn..."
+              required
+              class="w-full px-4 py-2.5 rounded-2xl bg-[#04111a]/75 border border-sky-300/20 text-sm text-white placeholder-sky-200/45 focus:outline-none focus:border-orange-400 transition"
+            >
+            <textarea
+              id="sender-message"
+              rows="3"
+              placeholder="Nhập tin nhắn gửi tới Đặng Huy Việt..."
+              required
+              class="w-full px-4 py-2.5 rounded-2xl bg-[#04111a]/75 border border-sky-300/20 text-sm text-white placeholder-sky-200/45 focus:outline-none focus:border-orange-400 transition resize-none"
+            ></textarea>
+
+            <button
+              type="submit"
+              class="island-orange w-full py-2.5 px-4 text-sm font-semibold flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+              <span>Gửi tin nhắn</span>
+            </button>
+
+            <div class="grid grid-cols-2 gap-2 pt-0.5">
+              <button
+                type="button"
+                onclick="sendViaSms()"
+                class="py-2 px-3 rounded-full bg-white/10 hover:bg-white/20 border border-sky-300/20 text-xs font-medium text-white flex items-center justify-center gap-1.5 transition"
+              >
+                <i class="fa-solid fa-comment-sms text-emerald-400"></i>
+                <span>Gửi SMS</span>
+              </button>
+              <button
+                type="button"
+                onclick="sendViaFacebook()"
+                class="py-2 px-3 rounded-full bg-white/10 hover:bg-white/20 border border-sky-300/20 text-xs font-medium text-white flex items-center justify-center gap-1.5 transition"
+              >
+                <i class="fa-brands fa-facebook-messenger text-sky-400"></i>
+                <span>Messenger</span>
+              </button>
+            </div>
+          </form>
+
+          <div id="chat-feed" class="mt-3.5 max-h-28 overflow-y-auto space-y-2 pr-1">
+            <div class="bg-sky-950/60 border border-sky-300/15 rounded-2xl px-3.5 py-2 text-xs text-sky-100">
+              <span class="font-semibold text-orange-400">Đặng Huy Việt:</span> Xin chào! Nhắn tin cho mình tại đây hoặc khám phá các hành tinh quanh nền xanh đen nhé 🌌
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chân trang -->
+      <div class="mt-7 pt-4 border-t border-sky-300/15 flex flex-col sm:flex-row items-center justify-between text-xs text-sky-200/65 gap-2">
+        <span>THPT Chuyên Bến Tre • Chuyên Lý</span>
+        <span>Kéo chuột nền xanh đen để xoay ngắm các hành tinh</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Script 1: Sao chép STK, Nhắn tin & Chuột 7 sắc cầu vồng -->
+  <script>
+    function copyAcbAccount() {
+      const stk = '44611217';
+      const badge = document.getElementById('copy-status');
+      navigator.clipboard?.writeText(stk).catch(() => {});
+      if (badge) {
+        badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Đã chép';
+        setTimeout(() => {
+          badge.innerHTML = '<i class="fa-regular fa-copy mr-1"></i>Copy';
+        }, 1600);
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function appendMessageToFeed(name, text) {
+      const feed = document.getElementById('chat-feed');
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      const item = document.createElement('div');
+      item.className = 'bg-orange-500/20 border border-orange-400/35 rounded-2xl px-3.5 py-2 text-xs text-white';
+      item.innerHTML = `
+        <div class="flex justify-between items-center mb-0.5">
+          <span class="font-semibold text-orange-300">${escapeHtml(name)}</span>
+          <span class="text-[10px] text-sky-200/70">${timeStr}</span>
+        </div>
+        <p class="text-white/95 break-words">${escapeHtml(text)}</p>
+      `;
+      feed.prepend(item);
+    }
+
+    function handleSendMessage(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('sender-name');
+      const msgInput = document.getElementById('sender-message');
+      const name = nameInput.value.trim();
+      const msg = msgInput.value.trim();
+      if (!name || !msg) return;
+
+      appendMessageToFeed(name, msg);
+      const saved = JSON.parse(localStorage.getItem('dhv_messages_v2') || '[]');
+      saved.push({ name, msg, time: new Date().toISOString() });
+      localStorage.setItem('dhv_messages_v2', JSON.stringify(saved));
+      msgInput.value = '';
+    }
+
+    function sendViaSms() {
+      const name = document.getElementById('sender-name').value.trim();
+      const msg = document.getElementById('sender-message').value.trim();
+      const fullText = name ? `[Từ ${name}]: ${msg}` : msg;
+      window.location.href = `sms:0365966945?body=${encodeURIComponent(fullText || 'Chào Huy Việt!')}`;
+    }
+
+    function sendViaFacebook() {
+      const msg = document.getElementById('sender-message').value.trim();
+      if (msg) {
+        navigator.clipboard?.writeText(msg).catch(() => {});
+      }
+      window.open('https://www.facebook.com/share/1EhuqUdwd6/?mibextid=wwXIfr', '_blank');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = JSON.parse(localStorage.getItem('dhv_messages_v2') || '[]');
+      saved.forEach(item => appendMessageToFeed(item.name, item.msg));
+    });
+
+    let cardHidden = false;
+    function toggleProfileCard() {
+      const card = document.getElementById('main-profile-card');
+      const icon = document.getElementById('toggle-icon');
+      const text = document.getElementById('toggle-text');
+      cardHidden = !cardHidden;
+      card.classList.toggle('hidden-mode', cardHidden);
+      if (cardHidden) {
+        icon.className = 'fa-solid fa-eye text-orange-400';
+        text.textContent = 'Hiện danh thiếp';
+      } else {
+        icon.className = 'fa-solid fa-eye-slash text-orange-400';
+        text.textContent = 'Ngắm vũ trụ';
+      }
+    }
+
+    const rainbowColors = ['#FF3B30', '#FF9500', '#FFCC00', '#34C759', '#00C7BE', '#007AFF', '#AF52DE'];
+    let colorIndex = 0;
+    let lastTime = 0;
+
+    function createRainbowParticle(x, y) {
+      const now = Date.now();
+      if (now - lastTime < 16) return;
+      lastTime = now;
+
+      const dot = document.createElement('div');
+      dot.className = 'rainbow-trail';
+      const size = Math.random() * 6 + 6;
+      const color = rainbowColors[colorIndex];
+      colorIndex = (colorIndex + 1) % rainbowColors.length;
+
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      dot.style.backgroundColor = color;
+      dot.style.boxShadow = `0 0 8px ${color}`;
+      document.body.appendChild(dot);
+
+      setTimeout(() => dot.remove(), 750);
+    }
+
+    document.addEventListener('mousemove', (e) => createRainbowParticle(e.clientX, e.clientY));
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) createRainbowParticle(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+  </script>
+
+  <!-- Script 2: Không gian xanh đen & các hành tinh 3D -->
+  <script>
+    const canvas = document.getElementById('space-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x04131e, 0.0022);
+
+    const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.set(0, 42, 92);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 8;
+    controls.maxDistance = 260;
+
+    const ambientLight = new THREE.AmbientLight(0x38bdf8, 0.75);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.PointLight(0xfff4d6, 2.7, 500);
+    sunLight.position.set(0, 0, 0);
+    scene.add(sunLight);
+
+    // Trường sao trong không gian xanh đen
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 3500;
+    const starPos = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 240 + Math.random() * 650;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i * 3 + 2] = r * Math.cos(phi);
+
+      const shade = 0.72 + Math.random() * 0.28;
+      starColors[i * 3] = shade * 0.85;
+      starColors[i * 3 + 1] = shade * 0.96;
+      starColors[i * 3 + 2] = 1.0;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+    const starMat = new THREE.PointsMaterial({ size: 1.4, vertexColors: true, transparent: true, opacity: 0.92 });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    function createPlanetTexture(type) {
+      const c = document.createElement('canvas');
+      c.width = 512;
+      c.height = 256;
+      const ctx = c.getContext('2d');
+
+      if (type === 'sun') {
+        const g = ctx.createRadialGradient(256, 128, 20, 256, 128, 260);
+        g.addColorStop(0, '#fff7cc');
+        g.addColorStop(0.5, '#ffb703');
+        g.addColorStop(1, '#fb8500');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 512, 256);
+      } else if (type === 'earth') {
+        ctx.fillStyle = '#0ea5e9';
+        ctx.fillRect(0, 0, 512, 256);
+        ctx.fillStyle = '#22c55e';
+        const continents = [
+          [90, 85, 55, 35], [130, 145, 35, 45], [250, 75, 65, 40],
+          [270, 130, 40, 50], [370, 90, 75, 45], [410, 165, 35, 25]
+        ];
+        continents.forEach(([x, y, rx, ry]) => {
+          ctx.beginPath();
+          ctx.ellipse(x, y, rx, ry, 0.2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.fillStyle = 'rgba(255,255,255,0.88)';
+        ctx.fillRect(0, 0, 512, 16);
+        ctx.fillRect(0, 240, 512, 16);
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        for (let i = 0; i < 18; i++) {
+          ctx.beginPath();
+          ctx.ellipse(Math.random() * 512, 30 + Math.random() * 196, 35, 7, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        const palettes = {
+          mercury: ['#94a3b8', '#64748b', '#cbd5e1'],
+          venus: ['#f59e0b', '#d97706', '#fde68a'],
+          mars: ['#ea580c', '#9a3412', '#fdba74'],
+          jupiter: ['#e2e8f0', '#b45309', '#78350f', '#fef3c7'],
+          saturn: ['#fde68a', '#d97706', '#92400e'],
+          uranus: ['#67e8f9', '#06b6d4', '#cffafe'],
+          neptune: ['#3b82f6', '#1d4ed8', '#93c5fd']
+        };
+        const cols = palettes[type] || ['#94a3b8'];
+        ctx.fillStyle = cols[0];
+        ctx.fillRect(0, 0, 512, 256);
+        for (let y = 0; y < 256; y += 14) {
+          ctx.fillStyle = cols[(y / 14) % cols.length];
+          ctx.globalAlpha = 0.45;
+          ctx.fillRect(0, y, 512, 10);
+        }
+        ctx.globalAlpha = 1;
+      }
+      return new THREE.CanvasTexture(c);
+    }
+
+    const sunMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(6.5, 48, 48),
+      new THREE.MeshBasicMaterial({ map: createPlanetTexture('sun') })
+    );
+    scene.add(sunMesh);
+
+    const sunGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(7.8, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff9f0a, transparent: true, opacity: 0.22 })
+    );
+    scene.add(sunGlow);
+
+    const planetConfigs = [
+      { key: 'mercury', name: 'Sao Thủy (Mercury)', radius: 1.1, dist: 12, speed: 0.018, desc: 'Hành tinh gần Mặt Trời nhất, chu kỳ quỹ đạo chỉ 88 ngày Trái Đất.' },
+      { key: 'venus', name: 'Sao Kim (Venus)', radius: 1.65, dist: 17, speed: 0.013, desc: 'Hành tinh có lớp khí quyển dày đặc và hiệu ứng nhà kính mạnh nhất.' },
+      { key: 'earth', name: 'Trái Đất (Earth)', radius: 1.9, dist: 23, speed: 0.01, desc: 'Hành tinh xanh của chúng ta với đại dương, lục địa và 1 Mặt Trăng quay quanh.' },
+      { key: 'mars', name: 'Sao Hỏa (Mars)', radius: 1.4, dist: 29, speed: 0.008, desc: 'Hành tinh Đỏ với ngọn núi lửa khổng lồ Olympus Mons và hai vệ tinh nhỏ.' },
+      { key: 'jupiter', name: 'Sao Mộc (Jupiter)', radius: 3.6, dist: 39, speed: 0.005, desc: 'Hành tinh khí khổng lồ lớn nhất Hệ Mặt Trời với dải mây đặc trưng.' },
+      { key: 'saturn', name: 'Sao Thổ (Saturn)', radius: 3.0, dist: 50, speed: 0.0038, hasRing: true, desc: 'Nổi bật với hệ thống vành đai băng và đá quay quanh xích đạo.' },
+      { key: 'uranus', name: 'Sao Thiên Vương (Uranus)', radius: 2.2, dist: 60, speed: 0.0028, desc: 'Hành tinh băng khổng lồ có trục tự quay nghiêng gần như nằm ngang.' },
+      { key: 'neptune', name: 'Sao Hải Vương (Neptune)', radius: 2.1, dist: 69, speed: 0.0022, desc: 'Hành tinh xa Mặt Trời nhất với sắc xanh thẳm đặc trưng.' }
+    ];
+
+    const planetObjects = {};
+
+    planetConfigs.forEach((cfg, idx) => {
+      const orbitPoints = [];
+      for (let i = 0; i <= 128; i++) {
+        const a = (i / 128) * Math.PI * 2;
+        orbitPoints.push(new THREE.Vector3(Math.cos(a) * cfg.dist, 0, Math.sin(a) * cfg.dist));
+      }
+      const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+      const orbitLine = new THREE.Line(
+        orbitGeo,
+        new THREE.LineBasicMaterial({ color: 0x7dd3fc, transparent: true, opacity: cfg.key === 'earth' ? 0.35 : 0.14 })
+      );
+      scene.add(orbitLine);
+
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(cfg.radius, 40, 40),
+        new THREE.MeshStandardMaterial({
+          map: createPlanetTexture(cfg.key),
+          roughness: 0.72,
+          metalness: 0.08
+        })
+      );
+
+      if (cfg.hasRing) {
+        const ringGeo = new THREE.RingGeometry(cfg.radius * 1.35, cfg.radius * 2.25, 64);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: 0xfde68a,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.72
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2.4;
+        mesh.add(ring);
+      }
+
+      let moonPivot = null;
+      if (cfg.key === 'earth') {
+        moonPivot = new THREE.Object3D();
+        const moonMesh = new THREE.Mesh(
+          new THREE.SphereGeometry(0.48, 24, 24),
+          new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.9 })
+        );
+        moonMesh.position.set(3.2, 0.3, 0);
+        moonPivot.add(moonMesh);
+        mesh.add(moonPivot);
+      }
+
+      scene.add(mesh);
+      planetObjects[cfg.key] = {
+        ...cfg,
+        mesh,
+        moonPivot,
+        angle: idx * 0.85
+      };
+    });
+
+    let selectedPlanetKey = 'solar';
+
+    function focusPlanet(key) {
+      selectedPlanetKey = key;
+
+      document.querySelectorAll('.planet-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.planet === key);
+      });
+
+      const titleEl = document.getElementById('planet-hud-title');
+      const descEl = document.getElementById('planet-hud-desc');
+
+      if (key === 'solar') {
+        titleEl.textContent = 'Hệ Mặt Trời • Toàn cảnh';
+        descEl.textContent = 'Kéo chuột để xoay 360°, cuộn để thu phóng, hoặc chọn hành tinh phía trên để bay tới quan sát.';
+        controls.target.set(0, 0, 0);
+        camera.position.set(0, 42, 92);
+      } else {
+        const p = planetObjects[key];
+        if (p) {
+          titleEl.textContent = p.name;
+          descEl.textContent = p.desc;
+        }
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      sunMesh.rotation.y += 0.002;
+
+      Object.values(planetObjects).forEach(p => {
+        p.angle += p.speed;
+        p.mesh.position.x = Math.cos(p.angle) * p.dist;
+        p.mesh.position.z = Math.sin(p.angle) * p.dist;
+        p.mesh.rotation.y += 0.012;
+
+        if (p.moonPivot) {
+          p.moonPivot.rotation.y += 0.035;
+        }
+      });
+
+      if (selectedPlanetKey !== 'solar' && planetObjects[selectedPlanetKey]) {
+        const targetObj = planetObjects[selectedPlanetKey];
+        const pos = targetObj.mesh.position;
+        controls.target.lerp(pos, 0.1);
+
+        const offsetDist = targetObj.radius * 4.8 + 4;
+        const desiredCam = new THREE.Vector3(
+          pos.x + offsetDist,
+          pos.y + offsetDist * 0.45,
+          pos.z + offsetDist
+        );
+        camera.position.lerp(desiredCam, 0.06);
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

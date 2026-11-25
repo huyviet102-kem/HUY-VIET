@@ -1,80 +1,184 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đặng Huy Việt - Danh Thiếp Điện Tử</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-body {
-font-family: 'Plus Jakarta+Sans', sans-serif;
-background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-min-height: 100vh;
-}
-.glass-card {
-background: rgba(255, 255, 255, 0.05);
-backdrop-filter: blur(16px);
--webkit-backdrop-filter: blur(16px);
-border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.glow {
-box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặng Huy Việt - Danh Thiếp Điện Tử</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      /* Con trỏ chuột tùy chỉnh hiệu ứng cầu vồng */
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><defs><linearGradient id='rainbow' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23FF3B30'/><stop offset='20%' stop-color='%23FF9500'/><stop offset='40%' stop-color='%23FFCC00'/><stop offset='60%' stop-color='%2334C759'/><stop offset='80%' stop-color='%23007AFF'/><stop offset='100%' stop-color='%23AF52DE'/></linearGradient></defs><path d='M5 3 L23 13 L14 16 L11 25 Z' fill='url(%23rainbow)' stroke='white' stroke-width='1.8' stroke-linejoin='round'/></svg>") 4 2, auto;
+    }
+
+    a, button {
+      cursor: inherit;
+    }
+
+    /* Thẻ phong cách Apple Minimalist */
+    .apple-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .apple-tile {
+      background-color: #f5f5f7;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .apple-tile:hover {
+      background-color: #ebebf0;
+    }
+
+    /* Hiệu ứng hạt cầu vồng theo chuột */
+    .rainbow-trail {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      animation: fadeOut 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.15);
+      }
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center p-4">
-<div class="w-full max-w-md mx-auto">
-<div class="glass-card glow rounded-3xl p-8 text-white text-center shadow-2xl relative overflow-hidden">
-<!-- Decorative background glow elements -->
-<div class="absolute -top-24 -left-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl"></div>
-<div class="absolute -bottom-24 -right-24 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl"></div>
-<!-- Avatar / Profile Icon -->
-<div class="relative mb-6">
-<div class="w-28 h-28 mx-auto rounded-full bg-gradient-to-tr from-violet-600 to-indigo-400 p-1 shadow-lg">
-<div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center text-3xl font-bold text-violet-300">
-ĐHV
-</div>
-</div>
-<span class="absolute bottom-1 right-1/3 bg-emerald-500 w-4 h-4 rounded-full border-2 border-slate-900 title="Đang hoạt động"></span>
-</div>
-<!-- Name & Title -->
-<h1 class="text-2xl font-bold tracking-tight mb-1">Đặng Huy Việt</h1>
-<p class="text-violet-300 text-sm font-medium mb-6">Học sinh - THPT Chuyên Bến Tre</p>
-<!-- Info Badges -->
-<div class="grid grid-cols-2 gap-3 mb-8 text-left">
-<div class="bg-white/5 border border-white/10 rounded-2xl p-3 flex items-center space-x-3">
-<div class="text-violet-400 text-lg"><i class="fa-solid fa-cake-candles"></i></div>
-<div>
-<div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Ngày sinh</div>
-<div class="text-sm font-medium">22/02</div>
-</div>
-</div>
-<div class="bg-white/5 border border-white/10 rounded-2xl p-3 flex items-center space-x-3">
-<div class="text-blue-400 text-lg"><i class="fa-solid fa-school"></i></div>
-<div>
-<div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Trường</div>
-<div class="text-sm font-medium truncate">Chuyên Bến Tre</div>
-</div>
-</div>
-</div>
-<!-- Action Buttons / Links -->
-<div class="space-y-3">
-<a href="tel:0365966945" class="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
-<i class="fa-solid fa-phone"></i>
-<span>036 596 6945</span>
-</a>
-<a href="https://www.facebook.com/share/1EhuqUdwd6/?mibextid=wwXIfr" target="_blank" class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-blue-900/30 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
-<i class="fa-brands fa-facebook"></i>
-<span>Kết nối Facebook</span>
-</a>
-</div>
-<!-- Footer Note -->
-<div class="mt-8 pt-4 border-t border-white/10 text-xs text-gray-400">
-Được tạo bởi AI WEB • Chúc bạn một ngày tốt lành!
-</div>
-</div>
-</div>
+<body class="flex items-center justify-center p-5">
+  <div class="w-full max-w-[400px] mx-auto">
+    <div class="apple-card rounded-[32px] p-8 text-center relative overflow-hidden">
+      
+      <!-- Avatar / Profile Icon -->
+      <div class="relative mb-5">
+        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-b from-[#2c2c2e] to-[#1d1d1f] p-[2px] shadow-md">
+          <div class="w-full h-full bg-[#1d1d1f] rounded-full flex items-center justify-center text-2xl font-semibold tracking-tight text-white">
+            ĐHV
+          </div>
+        </div>
+        <span class="absolute bottom-0.5 right-[36%] bg-[#34c759] w-3.5 h-3.5 rounded-full border-[2.5px] border-white" title="Đang hoạt động"></span>
+      </div>
+
+      <!-- Tên & Chuyên ngành -->
+      <h1 class="text-[26px] font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-1">
+        Đặng Huy Việt
+      </h1>
+      <p class="text-[#86868b] text-[15px] font-normal mb-7">
+        Chuyên Lý • THPT Chuyên Bến Tre
+      </p>
+
+      <!-- Thông tin chi tiết -->
+      <div class="grid grid-cols-2 gap-3 mb-7 text-left">
+        <div class="apple-tile rounded-2xl p-3.5 flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#ff3b30] shadow-xs shrink-0">
+            <i class="fa-solid fa-cake-candles text-sm"></i>
+          </div>
+          <div>
+            <div class="text-[11px] text-[#86868b] font-medium">Ngày sinh</div>
+            <div class="text-[14px] font-semibold text-[#1d1d1f]">22/02/2010</div>
+          </div>
+        </div>
+
+        <div class="apple-tile rounded-2xl p-3.5 flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#0071e3] shadow-xs shrink-0">
+            <i class="fa-solid fa-atom text-sm"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="text-[11px] text-[#86868b] font-medium">Lớp chuyên</div>
+            <div class="text-[14px] font-semibold text-[#1d1d1f] truncate">Chuyên Lý</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Các nút liên hệ phong cách Apple -->
+      <div class="space-y-3">
+        <a href="tel:0365966945" class="w-full py-3.5 px-5 bg-[#1d1d1f] hover:bg-[#333336] active:scale-[0.99] text-white text-[15px] font-medium rounded-full flex items-center justify-center space-x-2.5 transition-all duration-200 shadow-xs">
+          <i class="fa-solid fa-phone text-xs"></i>
+          <span>036 596 6945</span>
+        </a>
+
+        <a href="https://www.facebook.com/share/1EhuqUdwd6/?mibextid=wwXIfr" target="_blank" class="w-full py-3.5 px-5 bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.99] text-white text-[15px] font-medium rounded-full flex items-center justify-center space-x-2.5 transition-all duration-200 shadow-xs">
+          <i class="fa-brands fa-facebook text-base"></i>
+          <span>Kết nối Facebook</span>
+        </a>
+      </div>
+
+      <!-- Chân trang -->
+      <div class="mt-8 pt-5 border-t border-black/[0.06] text-[12px] text-[#86868b]">
+        THPT Chuyên Bến Tre • Chúc bạn một ngày tốt lành
+      </div>
+    </div>
+  </div>
+
+  <!-- Script tạo dải hạt bảy sắc cầu vồng khi di chuyển chuột -->
+  <script>
+    const rainbowColors = [
+      '#FF3B30', // Đỏ
+      '#FF9500', // Cam
+      '#FFCC00', // Vàng
+      '#34C759', // Lục
+      '#00C7BE', // Lam nhạt
+      '#007AFF', // Chàm / Xanh dương
+      '#AF52DE'  // Tím
+    ];
+
+    let colorIndex = 0;
+    let lastTime = 0;
+
+    function createRainbowParticle(x, y) {
+      const now = Date.now();
+      if (now - lastTime < 16) return; // Giới hạn mật độ hạt để mượt mà
+      lastTime = now;
+
+      const dot = document.createElement('div');
+      dot.className = 'rainbow-trail';
+      
+      const size = Math.random() * 6 + 6; // Kích thước từ 6px đến 12px
+      const color = rainbowColors[colorIndex];
+      colorIndex = (colorIndex + 1) % rainbowColors.length;
+
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      dot.style.backgroundColor = color;
+      dot.style.boxShadow = `0 0 8px ${color}`;
+
+      document.body.appendChild(dot);
+
+      setTimeout(() => {
+        dot.remove();
+      }, 750);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      createRainbowParticle(e.clientX, e.clientY);
+    });
+
+    // Hỗ trợ thêm khi chạm vuốt trên điện thoại
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        createRainbowParticle(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+  </script>
 </body>
 </html>

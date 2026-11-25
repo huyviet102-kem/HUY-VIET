@@ -14,7 +14,6 @@
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      /* Con trỏ chuột tùy chỉnh hiệu ứng cầu vồng */
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><defs><linearGradient id='rainbow' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23FF3B30'/><stop offset='20%' stop-color='%23FF9500'/><stop offset='40%' stop-color='%23FFCC00'/><stop offset='60%' stop-color='%2334C759'/><stop offset='80%' stop-color='%23007AFF'/><stop offset='100%' stop-color='%23AF52DE'/></linearGradient></defs><path d='M5 3 L23 13 L14 16 L11 25 Z' fill='url(%23rainbow)' stroke='white' stroke-width='1.8' stroke-linejoin='round'/></svg>") 4 2, auto;
     }
 
@@ -24,21 +23,53 @@
 
     /* Thẻ phong cách Apple Minimalist */
     .apple-card {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
     }
 
-    .apple-tile {
-      background-color: #f5f5f7;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      transition: transform 0.2s ease, background-color 0.2s ease;
+    /* Khung viên thuốc kiểu Apple Dynamic Island màu cam */
+    .island-orange {
+      background: linear-gradient(135deg, #ff9f0a 0%, #ff7a00 100%);
+      color: #ffffff;
+      border-radius: 9999px;
+      box-shadow: 0 8px 20px -6px rgba(255, 122, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
     }
 
-    .apple-tile:hover {
-      background-color: #ebebf0;
+    .island-orange:hover {
+      transform: translateY(-1.5px) scale(1.01);
+      filter: brightness(1.03);
+    }
+
+    .island-orange:active {
+      transform: scale(0.98);
+    }
+
+    /* Vương miệng bling bling lấp lánh */
+    .bling-crown {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-4deg);
+      font-size: 28px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255, 214, 10, 0.9)) drop-shadow(0 0 16px rgba(255, 149, 0, 0.75));
+      animation: blingPulse 2s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    @keyframes blingPulse {
+      0%, 100% {
+        transform: translateX(-50%) rotate(-4deg) scale(1);
+        filter: drop-shadow(0 0 7px rgba(255, 214, 10, 0.85)) drop-shadow(0 0 14px rgba(255, 149, 0, 0.7));
+      }
+      50% {
+        transform: translateX(-50%) rotate(3deg) scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1)) drop-shadow(0 0 22px rgba(255, 204, 0, 0.95));
+      }
     }
 
     /* Hiệu ứng hạt cầu vồng theo chuột */
@@ -64,11 +95,12 @@
   </style>
 </head>
 <body class="flex items-center justify-center p-5">
-  <div class="w-full max-w-[400px] mx-auto">
-    <div class="apple-card rounded-[32px] p-8 text-center relative overflow-hidden">
-      
-      <!-- Avatar / Profile Icon -->
-      <div class="relative mb-5">
+  <div class="w-full max-w-[410px] mx-auto">
+    <div class="apple-card rounded-[32px] p-7 text-center relative overflow-hidden">
+
+      <!-- Avatar + Vương miệng bling bling -->
+      <div class="relative mt-2 mb-5">
+        <span class="bling-crown" aria-hidden="true">👑</span>
         <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-b from-[#2c2c2e] to-[#1d1d1f] p-[2px] shadow-md">
           <div class="w-full h-full bg-[#1d1d1f] rounded-full flex items-center justify-center text-2xl font-semibold tracking-tight text-white">
             ĐHV
@@ -81,29 +113,69 @@
       <h1 class="text-[26px] font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-1">
         Đặng Huy Việt
       </h1>
-      <p class="text-[#86868b] text-[15px] font-normal mb-7">
+      <p class="text-[#86868b] text-[15px] font-normal mb-6">
         Chuyên Lý • THPT Chuyên Bến Tre
       </p>
 
-      <!-- Thông tin chi tiết -->
-      <div class="grid grid-cols-2 gap-3 mb-7 text-left">
-        <div class="apple-tile rounded-2xl p-3.5 flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#ff3b30] shadow-xs shrink-0">
-            <i class="fa-solid fa-cake-candles text-sm"></i>
+      <!-- Nhóm khung Dynamic Island màu cam: Ngày sinh, Chuyên Lý, ACB -->
+      <div class="space-y-2.5 mb-6 text-left">
+        <div class="grid grid-cols-2 gap-2.5">
+          <div class="island-orange px-4 py-2.5 flex items-center space-x-2.5">
+            <i class="fa-solid fa-cake-candles text-sm opacity-95"></i>
+            <div class="leading-tight">
+              <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Ngày sinh</div>
+              <div class="text-[13.5px] font-semibold">22/02/2010</div>
+            </div>
           </div>
-          <div>
-            <div class="text-[11px] text-[#86868b] font-medium">Ngày sinh</div>
-            <div class="text-[14px] font-semibold text-[#1d1d1f]">22/02/2010</div>
+
+          <div class="island-orange px-4 py-2.5 flex items-center space-x-2.5">
+            <i class="fa-solid fa-atom text-sm opacity-95"></i>
+            <div class="leading-tight min-w-0">
+              <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Lớp chuyên</div>
+              <div class="text-[13.5px] font-semibold truncate">Chuyên Lý</div>
+            </div>
           </div>
         </div>
 
-        <div class="apple-tile rounded-2xl p-3.5 flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#0071e3] shadow-xs shrink-0">
-            <i class="fa-solid fa-atom text-sm"></i>
+        <!-- Khung tài khoản ngân hàng ACB (bấm để sao chép) -->
+        <button
+          type="button"
+          onclick="copyAcbAccount()"
+          class="island-orange w-full px-4 py-3 flex items-center justify-between text-left"
+          title="Nhấn để sao chép STK ACB"
+        >
+          <div class="flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">
+              ACB
+            </span>
+            <div class="leading-tight">
+              <div class="text-[10px] uppercase tracking-wider opacity-85 font-medium">Ngân hàng ACB</div>
+              <div class="text-[14.5px] font-semibold tracking-wide">44611217</div>
+            </div>
           </div>
-          <div class="min-w-0">
-            <div class="text-[11px] text-[#86868b] font-medium">Lớp chuyên</div>
-            <div class="text-[14px] font-semibold text-[#1d1d1f] truncate">Chuyên Lý</div>
+          <span id="copy-status" class="text-[11px] font-medium bg-white/20 px-2.5 py-1 rounded-full">
+            <i class="fa-regular fa-copy mr-1"></i>Copy
+          </span>
+        </button>
+      </div>
+
+      <!-- Từng mục Thể thao, Cầu lông, Bóng đá dạng Dynamic Island màu cam -->
+      <div class="mb-7 text-left">
+        <div class="text-[11px] font-medium text-[#86868b] uppercase tracking-wider mb-2 px-1">
+          Sở thích
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+            <i class="fa-solid fa-bolt text-xs"></i>
+            <span>Thể thao</span>
+          </div>
+          <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+            <i class="fa-solid fa-feather text-xs"></i>
+            <span>Cầu lông</span>
+          </div>
+          <div class="island-orange px-3.5 py-2 flex items-center space-x-2 text-[13px] font-medium">
+            <i class="fa-regular fa-futbol text-xs"></i>
+            <span>Bóng đá</span>
           </div>
         </div>
       </div>
@@ -122,22 +194,34 @@
       </div>
 
       <!-- Chân trang -->
-      <div class="mt-8 pt-5 border-t border-black/[0.06] text-[12px] text-[#86868b]">
+      <div class="mt-7 pt-4 border-t border-black/[0.06] text-[12px] text-[#86868b]">
         THPT Chuyên Bến Tre • Chúc bạn một ngày tốt lành
       </div>
     </div>
   </div>
 
-  <!-- Script tạo dải hạt bảy sắc cầu vồng khi di chuyển chuột -->
+  <!-- Script sao chép STK ACB & hiệu ứng chuột cầu vồng -->
   <script>
+    function copyAcbAccount() {
+      const stk = '44611217';
+      const badge = document.getElementById('copy-status');
+      navigator.clipboard?.writeText(stk).catch(() => {});
+      if (badge) {
+        badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Đã chép';
+        setTimeout(() => {
+          badge.innerHTML = '<i class="fa-regular fa-copy mr-1"></i>Copy';
+        }, 1600);
+      }
+    }
+
     const rainbowColors = [
-      '#FF3B30', // Đỏ
-      '#FF9500', // Cam
-      '#FFCC00', // Vàng
-      '#34C759', // Lục
-      '#00C7BE', // Lam nhạt
-      '#007AFF', // Chàm / Xanh dương
-      '#AF52DE'  // Tím
+      '#FF3B30',
+      '#FF9500',
+      '#FFCC00',
+      '#34C759',
+      '#00C7BE',
+      '#007AFF',
+      '#AF52DE'
     ];
 
     let colorIndex = 0;
@@ -145,13 +229,13 @@
 
     function createRainbowParticle(x, y) {
       const now = Date.now();
-      if (now - lastTime < 16) return; // Giới hạn mật độ hạt để mượt mà
+      if (now - lastTime < 16) return;
       lastTime = now;
 
       const dot = document.createElement('div');
       dot.className = 'rainbow-trail';
-      
-      const size = Math.random() * 6 + 6; // Kích thước từ 6px đến 12px
+
+      const size = Math.random() * 6 + 6;
       const color = rainbowColors[colorIndex];
       colorIndex = (colorIndex + 1) % rainbowColors.length;
 
@@ -173,7 +257,6 @@
       createRainbowParticle(e.clientX, e.clientY);
     });
 
-    // Hỗ trợ thêm khi chạm vuốt trên điện thoại
     document.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) {
         createRainbowParticle(e.touches[0].clientX, e.touches[0].clientY);
